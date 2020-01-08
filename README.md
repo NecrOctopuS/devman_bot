@@ -28,6 +28,12 @@ pip install -r requirements.txt
 In telegram you need to write to your bot any message.
 Run the script and when your lesson will be inspected you will get the message from your bot.
 
+Example:
+```commandline
+py main.py
+```
+
+
 ### Objective of the project
 
 The code is written for educational purposes on the online course for web developers [dvmn.org](https://dvmn.org/).
