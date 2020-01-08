@@ -19,19 +19,9 @@ headers = {
 response = requests.get(url, headers=headers)
 while True:
     if response.json()['status'] == 'timeout':
-        try:
-            params = {
-                'timestamp': response.json()['timestamp_to_request']
-            }
-            response = requests.get(url, headers=headers, params=params)
-        except requests.exceptions.ReadTimeout:
-            time.sleep(5)
-        except requests.exceptions.ConnectionError:
-            time.sleep(5)
-        except ConnectionResetError:
-            time.sleep(5)
-        except KeyError:
-            response = requests.get(url, headers=headers, params=params)
+        params = {
+            'timestamp': response.json()['timestamp_to_request']
+        }
     elif response.json()['status'] == 'found':
         attempts = response.json()['new_attempts']
         for attempt in attempts:
@@ -41,14 +31,14 @@ while True:
                 bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нашлись ошибки")
             else:
                 bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нет ошибок")
-        try:
-            params = {
-                'timestamp': response.json()['new_attempts'][0]['timestamp']
-            }
-            response = requests.get(url, headers=headers, params=params)
-        except requests.exceptions.ReadTimeout:
-            time.sleep(5)
-        except requests.exceptions.ConnectionError:
-            time.sleep(5)
-        except ConnectionResetError:
-            time.sleep(5)
+        params = {
+            'timestamp': response.json()['new_attempts'][0]['timestamp']
+        }
+    try:
+        response = requests.get(url, headers=headers, params=params)
+    except requests.exceptions.ReadTimeout:
+        time.sleep(5)
+    except requests.exceptions.ConnectionError:
+        time.sleep(5)
+    except ConnectionResetError:
+        time.sleep(5)
