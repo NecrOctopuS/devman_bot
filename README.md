@@ -30,7 +30,7 @@ Run the script and when your lesson will be inspected you will get the message f
 
 Example:
 ```commandline
-py main.py
+python3 main.py
 ```
 
 
