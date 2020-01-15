@@ -20,12 +20,13 @@ params = {}
 while True:
     try:
         response = requests.get(url, headers=headers, params=params)
-        if response.json()['status'] == 'timeout':
+        response_json = response.json()
+        if response_json['status'] == 'timeout':
             params = {
-                'timestamp': response.json()['timestamp_to_request']
+                'timestamp': response_json['timestamp_to_request']
             }
-        elif response.json()['status'] == 'found':
-            attempts = response.json()['new_attempts']
+        elif response_json['status'] == 'found':
+            attempts = response_json['new_attempts']
             for attempt in attempts:
                 bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                                            f" {'https://dvmn.org' + attempt['lesson_url']}")
@@ -34,7 +35,7 @@ while True:
                 else:
                     bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нет ошибок")
             params = {
-                'timestamp': response.json()['new_attempts'][0]['timestamp']
+                'timestamp': response_json['new_attempts'][0]['timestamp']
             }
     except requests.exceptions.ReadTimeout:
         time.sleep(5)
