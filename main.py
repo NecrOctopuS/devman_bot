@@ -36,7 +36,7 @@ while True:
                                                                f" 'https://dvmn.org'{attempt['lesson_url']}\n"
                                                                f"В работе нет ошибок")
             params = {
-                'timestamp': response_json['new_attempts'][0]['timestamp']
+                'timestamp': response_json['last_attempt_timestamp']
             }
     except requests.exceptions.ReadTimeout:
         time.sleep(1)
