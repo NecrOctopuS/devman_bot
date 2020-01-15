@@ -4,13 +4,11 @@ import telegram
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
 DEVMAN_TOKEN = os.getenv('DEVMAN_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_ID = int(os.getenv('TELEGRAM_ID'))
 bot = telegram.Bot(token=TELEGRAM_TOKEN)
-
 
 url = 'https://dvmn.org/api/long_polling/'
 headers = {
@@ -29,12 +27,14 @@ while True:
         elif response_json['status'] == 'found':
             attempts = response_json['new_attempts']
             for attempt in attempts:
-                bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
-                                                           f" 'https://dvmn.org'{attempt['lesson_url']}")
                 if attempt['is_negative']:
-                    bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нашлись ошибки")
+                    bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
+                                                               f" 'https://dvmn.org'{attempt['lesson_url']}\n"
+                                                               f"В работе нашлись ошибки")
                 else:
-                    bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нет ошибок")
+                    bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
+                                                               f" 'https://dvmn.org'{attempt['lesson_url']}\n"
+                                                               f"В работе нет ошибок")
             params = {
                 'timestamp': response_json['new_attempts'][0]['timestamp']
             }
@@ -47,4 +47,3 @@ while True:
     except requests.exceptions.HTTPError as exception:
         print(exception.response.text)
         time.sleep(5)
-
