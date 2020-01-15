@@ -39,11 +39,11 @@ while True:
                 'timestamp': response_json['new_attempts'][0]['timestamp']
             }
     except requests.exceptions.ReadTimeout:
-        time.sleep(5)
+        time.sleep(1)
     except requests.exceptions.ConnectionError:
-        time.sleep(5)
+        time.sleep(1)
     except ConnectionResetError:
-        time.sleep(5)
+        time.sleep(1)
     except requests.exceptions.HTTPError as exception:
         print(exception.response.text)
-        time.sleep(5)
+        time.sleep(1)
