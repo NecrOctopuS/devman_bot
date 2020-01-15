@@ -20,6 +20,7 @@ params = {}
 while True:
     try:
         response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
         response_json = response.json()
         if response_json['status'] == 'timeout':
             params = {
@@ -42,5 +43,8 @@ while True:
     except requests.exceptions.ConnectionError:
         time.sleep(5)
     except ConnectionResetError:
+        time.sleep(5)
+    except requests.exceptions.HTTPError as exception:
+        print(exception.response.text)
         time.sleep(5)
 
