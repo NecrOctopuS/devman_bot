@@ -30,7 +30,7 @@ while True:
             attempts = response_json['new_attempts']
             for attempt in attempts:
                 bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
-                                                           f" {'https://dvmn.org' + attempt['lesson_url']}")
+                                                           f" 'https://dvmn.org'{attempt['lesson_url']}")
                 if attempt['is_negative']:
                     bot.send_message(chat_id=TELEGRAM_ID, text=f"В работе нашлись ошибки")
                 else:
