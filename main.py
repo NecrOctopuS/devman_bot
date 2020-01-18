@@ -19,27 +19,27 @@ while True:
     try:
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()
-        response_json = response.json()
-        if response_json['status'] == 'timeout':
+        json_data = response.json()
+        if json_data['status'] == 'timeout':
             params = {
-                'timestamp': response_json['timestamp_to_request']
+                'timestamp': json_data['timestamp_to_request']
             }
-        elif response_json['status'] == 'found':
-            attempts = response_json['new_attempts']
+        elif json_data['status'] == 'found':
+            attempts = json_data['new_attempts']
             for attempt in attempts:
                 if attempt['is_negative']:
                     bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
-                                                               f" 'https://dvmn.org'{attempt['lesson_url']}\n"
+                                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                                                f"В работе нашлись ошибки")
                 else:
                     bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
-                                                               f" 'https://dvmn.org'{attempt['lesson_url']}\n"
+                                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                                                f"В работе нет ошибок")
             params = {
-                'timestamp': response_json['last_attempt_timestamp']
+                'timestamp': json_data['last_attempt_timestamp']
             }
     except requests.exceptions.ReadTimeout:
-        time.sleep(1)
+        time.sleep(0.1)
     except requests.exceptions.ConnectionError:
         time.sleep(1)
     except ConnectionResetError:
