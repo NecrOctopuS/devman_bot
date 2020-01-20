@@ -20,11 +20,7 @@ while True:
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()
         json_data = response.json()
-        if json_data['status'] == 'timeout':
-            params = {
-                'timestamp': json_data['timestamp_to_request']
-            }
-        elif json_data['status'] == 'found':
+        if json_data['status'] == 'found':
             attempts = json_data['new_attempts']
             for attempt in attempts:
                 if attempt['is_negative']:
@@ -35,9 +31,9 @@ while True:
                     bot.send_message(chat_id=TELEGRAM_ID, text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                                                f"https://dvmn.org{attempt['lesson_url']}\n"
                                                                f"В работе нет ошибок")
-            params = {
-                'timestamp': json_data['last_attempt_timestamp']
-            }
+        params = {
+            'timestamp': json_data['last_attempt_timestamp']
+        }
     except requests.exceptions.ReadTimeout:
         time.sleep(0.1)
     except requests.exceptions.ConnectionError:
