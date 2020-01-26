@@ -3,7 +3,9 @@ import time
 import telegram
 from dotenv import load_dotenv
 import os
+import logging
 
+logging.warning('Бот запущен')
 load_dotenv()
 DEVMAN_TOKEN = os.environ['DEVMAN_TOKEN']
 TELEGRAM_TOKEN = os.environ['TELEGRAM_TOKEN']
