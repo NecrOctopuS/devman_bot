@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-DEVMAN_TOKEN = os.getenv('DEVMAN_TOKEN')
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-TELEGRAM_ID = int(os.getenv('TELEGRAM_ID'))
+DEVMAN_TOKEN = os.environ('DEVMAN_TOKEN')
+TELEGRAM_TOKEN = os.environ('TELEGRAM_TOKEN')
+TELEGRAM_ID = int(os.environ('TELEGRAM_ID'))
 bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 url = 'https://dvmn.org/api/long_polling/'
