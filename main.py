@@ -1,7 +1,6 @@
 import requests
 import time
 import telegram
-from dotenv import load_dotenv
 import os
 import logging
 
@@ -24,7 +23,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.INFO)
     logger.addHandler(MyLogsHandler())
     logger.info("Бот запущен!")
-    url = 'https://dvmn.org/api/long_polling/'
+    url = 'https://dvmn.org/api/long_poll1ing/'
     headers = {
         'Authorization': 'Token ' + DEVMAN_TOKEN,
     }
@@ -50,17 +49,15 @@ if __name__ == '__main__':
             params = {
                 'timestamp': json_data['last_attempt_timestamp']
             }
-        except requests.exceptions.ReadTimeout as exception:
-            logger.info(exception.response.text)
+        except requests.exceptions.ReadTimeout:
+            logger.exception()
             time.sleep(0.1)
-        except requests.exceptions.ConnectionError as exception:
-            logger.info(exception.response.text)
+        except requests.exceptions.ConnectionError:
+            logger.exception()
             time.sleep(1)
-        except ConnectionResetError as exception:
-            logger.info(exception.response.text)
+        except ConnectionResetError:
+            logger.exception()
             time.sleep(1)
-        except requests.exceptions.HTTPError as exception:
-            logger.info(exception.response.text)
+        except requests.exceptions.HTTPError:
+            logger.exception()
             time.sleep(1)
-
-# load_dotenv()
