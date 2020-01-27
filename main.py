@@ -23,7 +23,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.ERROR)
     logger.addHandler(MyLogsHandler())
     logger.info("Бот запущен!")
-    url = 'https://dvmn.org/api/long_poll1ing/'
+    url = 'https://dvmn.org/api/long_polling/'
     headers = {
         'Authorization': 'Token ' + DEVMAN_TOKEN,
     }
@@ -60,4 +60,4 @@ if __name__ == '__main__':
             time.sleep(1)
         except requests.exceptions.HTTPError as err:
             logger.error(err, exc_info=True)
-            time.sleep(1)
+            time.sleep(360)
