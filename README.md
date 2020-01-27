@@ -3,8 +3,13 @@
 The program send notifications about verification lessons from [Devman](https://devman.org/).
 
 ### How to install
- 
-The following data must be written to the `.env` file:
+
+Then you need to deploy this project to [Heroku](https://heroku.com/)
+
+On [Heroku](https://heroku.com/) you need create the app, and connect it to this project.
+
+In Settings -> Config Vars you need add next variables
+
 ```text
 DEVMAN_TOKEN='asda6d4a6d4a6s4d6' 
 TELEGRAM_TOKEN='4645646:asd4a6dadawee4da6d4s'
@@ -17,21 +22,13 @@ TELEGRAM_TOKEN can be take it from [BotFather](https://telegram.me/BotFather) by
 
 TELEGRAM_ID can be take it from [userinfobot](https://telegram.me/userinfobot) by type `/start`.
 
-Python3 should already be installed.
-Then use `pip` (or` pip3`, there is a conflict with Python2) to install the dependencies:
-```
-pip install -r requirements.txt
-```
+After that in Resources you need turn on bot.
 
 ### How to run
 
 In telegram you need to write to your bot any message.
-Run the script and when your lesson will be inspected you will get the message from your bot.
+When your lesson will be inspected you will get the message from your bot.
 
-Example:
-```commandline
-python3 main.py
-```
 
 
 ### Objective of the project
