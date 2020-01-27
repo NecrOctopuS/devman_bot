@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
 
     logger = logging.getLogger("MyLogsHandler")
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
     logger.addHandler(MyLogsHandler())
     logger.info("Бот запущен!")
     url = 'https://dvmn.org/api/long_poll1ing/'
@@ -49,15 +49,15 @@ if __name__ == '__main__':
             params = {
                 'timestamp': json_data['last_attempt_timestamp']
             }
-        except requests.exceptions.ReadTimeout:
-            logger.exception()
+        except requests.exceptions.ReadTimeout as err:
+            logger.error(err, exc_info=True)
             time.sleep(0.1)
-        except requests.exceptions.ConnectionError:
-            logger.exception()
+        except requests.exceptions.ConnectionError as err:
+            logger.error(err, exc_info=True)
             time.sleep(1)
-        except ConnectionResetError:
-            logger.exception()
+        except ConnectionResetError as err:
+            logger.error(err, exc_info=True)
             time.sleep(1)
-        except requests.exceptions.HTTPError:
-            logger.exception()
+        except requests.exceptions.HTTPError as err:
+            logger.error(err, exc_info=True)
             time.sleep(1)
