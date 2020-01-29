@@ -3,20 +3,21 @@ import time
 import telegram
 import os
 import logging
-
-DEVMAN_TOKEN = os.environ['DEVMAN_TOKEN']
-TELEGRAM_TOKEN = os.environ['TELEGRAM_TOKEN']
-TELEGRAM_ID = int(os.environ['TELEGRAM_ID'])
+from dotenv import load_dotenv
 
 if __name__ == '__main__':
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    load_dotenv()
+    devman_token = os.environ['DEVMAN_TOKEN']
+    telegram_token = os.environ['TELEGRAM_TOKEN']
+    telegram_id = int(os.environ['TELEGRAM_ID'])
+    bot = telegram.Bot(token=telegram_token)
 
 
     class MyLogsHandler(logging.Handler):
 
         def emit(self, record):
             log_entry = self.format(record)
-            bot.send_message(chat_id=TELEGRAM_ID, text=log_entry)
+            bot.send_message(chat_id=telegram_id, text=log_entry)
 
 
     logger = logging.getLogger("MyLogsHandler")
@@ -25,7 +26,7 @@ if __name__ == '__main__':
     logger.info("Бот запущен!")
     url = 'https://dvmn.org/api/long_polling/'
     headers = {
-        'Authorization': 'Token ' + DEVMAN_TOKEN,
+        'Authorization': 'Token ' + devman_token,
     }
     params = {}
     while True:
@@ -37,12 +38,12 @@ if __name__ == '__main__':
                 attempts = json_data['new_attempts']
                 for attempt in attempts:
                     if attempt['is_negative']:
-                        bot.send_message(chat_id=TELEGRAM_ID,
+                        bot.send_message(chat_id=telegram_id,
                                          text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                               f"В работе нашлись ошибки")
                     else:
-                        bot.send_message(chat_id=TELEGRAM_ID,
+                        bot.send_message(chat_id=telegram_id,
                                          text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                               f"В работе нет ошибок")
