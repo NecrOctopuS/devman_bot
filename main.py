@@ -5,25 +5,8 @@ import os
 import logging
 from dotenv import load_dotenv
 
-if __name__ == '__main__':
-    load_dotenv()
-    devman_token = os.environ['DEVMAN_TOKEN']
-    telegram_token = os.environ['TELEGRAM_TOKEN']
-    telegram_id = int(os.environ['TELEGRAM_ID'])
-    bot = telegram.Bot(token=telegram_token)
 
-
-    class MyLogsHandler(logging.Handler):
-
-        def emit(self, record):
-            log_entry = self.format(record)
-            bot.send_message(chat_id=telegram_id, text=log_entry)
-
-
-    logger = logging.getLogger("MyLogsHandler")
-    logger.setLevel(logging.ERROR)
-    logger.addHandler(MyLogsHandler())
-    logger.info("Бот запущен!")
+def request_devman_api(bot, logger, devman_token, telegram_id):
     url = 'https://dvmn.org/api/long_polling/'
     headers = {
         'Authorization': 'Token ' + devman_token,
@@ -62,3 +45,27 @@ if __name__ == '__main__':
         except requests.exceptions.HTTPError as err:
             logger.error(err, exc_info=True)
             time.sleep(360)
+
+
+def main():
+    load_dotenv()
+    devman_token = os.environ['DEVMAN_TOKEN']
+    telegram_token = os.environ['TELEGRAM_TOKEN']
+    telegram_id = int(os.environ['TELEGRAM_ID'])
+    bot = telegram.Bot(token=telegram_token)
+
+    class MyLogsHandler(logging.Handler):
+
+        def emit(self, record):
+            log_entry = self.format(record)
+            bot.send_message(chat_id=telegram_id, text=log_entry)
+
+    logger = logging.getLogger("MyLogsHandler")
+    logger.setLevel(logging.ERROR)
+    logger.addHandler(MyLogsHandler())
+    logger.info("Бот запущен!")
+    request_devman_api(bot, logger, devman_token, telegram_id)
+
+
+if __name__ == '__main__':
+    main()
