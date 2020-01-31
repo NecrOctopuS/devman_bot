@@ -31,7 +31,7 @@ def request_devman_api(bot, logger, devman_token, telegram_id):
                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                               f"В работе нет ошибок")
             params = {
-                'timestamp': json_data['last_attempt_timestamp']
+                'timestamp': json_data.get('timestamp_to_request')
             }
         except requests.exceptions.ReadTimeout as err:
             logger.error(err, exc_info=True)
