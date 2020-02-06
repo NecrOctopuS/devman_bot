@@ -6,7 +6,7 @@ import logging
 from dotenv import load_dotenv
 
 
-def request_devman_api(bot, logger, devman_token, telegram_id):
+def request_devman_api(bot, logger, devman_token, telegram_id, server_max_timeout):
     url = 'https://dvmn.org/api/long_polling/'
     headers = {
         'Authorization': 'Token ' + devman_token,
@@ -14,7 +14,7 @@ def request_devman_api(bot, logger, devman_token, telegram_id):
     params = {}
     while True:
         try:
-            response = requests.get(url, headers=headers, params=params)
+            response = requests.get(url, headers=headers, params=params, timeout=server_max_timeout)
             response.raise_for_status()
             json_data = response.json()
             if json_data['status'] == 'found':
@@ -30,12 +30,12 @@ def request_devman_api(bot, logger, devman_token, telegram_id):
                                          text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                               f"В работе нет ошибок")
-            params = {
-                'timestamp': json_data.get('timestamp_to_request')
-            }
+            else:
+                params = {
+                    'timestamp': json_data['timestamp_to_request']
+                }
         except requests.exceptions.ReadTimeout as err:
-            logger.error(err, exc_info=True)
-            time.sleep(0.1)
+            logger.critical(err, exc_info=True)
         except requests.exceptions.ConnectionError as err:
             logger.error(err, exc_info=True)
             time.sleep(1)
@@ -52,6 +52,7 @@ def main():
     devman_token = os.environ['DEVMAN_TOKEN']
     telegram_token = os.environ['TELEGRAM_TOKEN']
     telegram_id = int(os.environ['TELEGRAM_ID'])
+    server_max_timeout = int(os.environ['SERVER_MAX_TIMEOUT'])
     bot = telegram.Bot(token=telegram_token)
 
     class MyLogsHandler(logging.Handler):
@@ -64,7 +65,7 @@ def main():
     logger.setLevel(logging.ERROR)
     logger.addHandler(MyLogsHandler())
     logger.info("Бот запущен!")
-    request_devman_api(bot, logger, devman_token, telegram_id)
+    request_devman_api(bot, logger, devman_token, telegram_id, server_max_timeout)
 
 
 if __name__ == '__main__':
