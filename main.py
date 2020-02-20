@@ -14,6 +14,7 @@ def request_devman_api(bot, logger, devman_token, telegram_id, server_max_timeou
     params = {}
     while True:
         try:
+            time.sleep(60)
             response = requests.get(url, headers=headers, params=params, timeout=server_max_timeout)
             response.raise_for_status()
             json_data = response.json()
