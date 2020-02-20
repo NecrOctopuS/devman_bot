@@ -30,7 +30,9 @@ def request_devman_api(bot, logger, devman_token, telegram_id, server_max_timeou
                                          text=f"У вас проверили работу {attempt['lesson_title']} \n"
                                               f"https://dvmn.org{attempt['lesson_url']}\n"
                                               f"В работе нет ошибок")
-                params = {}
+                params = {
+                    'timestamp': json_data['last_attempt_timestamp']
+                }
             else:
                 params = {
                     'timestamp': json_data['timestamp_to_request']
